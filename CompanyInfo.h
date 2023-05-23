@@ -5,7 +5,7 @@
 #include <fstream>
 #include <string>
 
-#include "vcpkg/packages/jsoncpp_x86-windows/include/json/value.h"
+#include "json/value.h"
 
 using namespace std;
 

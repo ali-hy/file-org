@@ -7,7 +7,7 @@
 #include <vector>
 #include<sstream>
 #include "CompanyInfo.h"
-#include "vcpkg/packages/jsoncpp_x86-windows/include/json/json.h"
+#include "json/json.h"
 
 using namespace std;
 
