@@ -80,7 +80,7 @@ bool CompanyInfoCollection::readDelimRecords(istream& inStream) {
 
 bool CompanyInfoCollection::writeDelimRecords(ostream& myStream, char delim) {
     stringstream ss;
-    int bufferSize = 50 * 1024 * 1024;
+    const int bufferSize = 50 * 1024 * 1024;
     char buf[bufferSize];
     //write first line that contains header of the columns
     myStream

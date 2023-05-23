@@ -36,7 +36,7 @@ CompanyInfo::CompanyInfo(const CompanyInfo& P) {
     Phone = P.Phone;
     Fax = P.Fax;
     Email = P.Email;
-    WebSite = P.WebSite;
+    Website = P.Website;
 }
 
 CompanyInfo::CompanyInfo(void) {
@@ -80,7 +80,7 @@ bool CompanyInfo::GetInfoFromUser() {
     cin >> ContactName;
     cout << "Enter TitleOfBusiness" << endl;
     cin >> TitleOfBusiness;
-    //Address,City, ZipCode, Phone, Fax, Email, WebSite;
+    //Address,City, ZipCode, Phone, Fax, Email, Website;
     //@@@ continue rest of the fields
     return true;
 }
@@ -93,7 +93,7 @@ bool CompanyInfo::WriteLengthIndicatorFields(ostream& outStream) {
     RecordLength = CompanyCode.length() + CompanyDescription.length() +
         CompanyName.length() + ContactName.length() + TitleOfBusiness.length() + Address.length() +
         City.length() + ZipCode.length() + Phone.length() + Fax.length() + Email.length() +
-        WebSite.length() + 1;
+        Website.length() + 1;
 
     fieldLength = CompanyCode.length();
     outStream << RecordLength << "R";
@@ -140,11 +140,11 @@ bool CompanyInfo::WriteLengthIndicatorFields(ostream& outStream) {
     outStream << fieldLength;
     outStream << Email;
 
-    fieldLength = WebSite.length();
+    fieldLength = Website.length();
     outStream << fieldLength;
-    outStream << WebSite;
+    outStream << Website;
 
-    // Address,City, ZipCode, Phone, Fax, Email, WebSite;
+    // Address,City, ZipCode, Phone, Fax, Email, Website;
     //@@@ continue rest of the fields DONE
     outStream << endl;
     return true;
@@ -199,13 +199,13 @@ bool CompanyInfo::readLengthIndicatorFields(istream& inStream) {
 
     inStream >> fieldLength;
     inStream.get(buf, fieldLength + 1);
-    WebSite = buf;
-    // Address,City, ZipCode, Phone, Fax, Email, WebSite;
+    Website = buf;
+    // Address,City, ZipCode, Phone, Fax, Email, Website;
     //@@@ continue rest of the fields
 
     return true;
 
-    //Address,City, ZipCode, Phone, Fax, Email, WebSite;
+    //Address,City, ZipCode, Phone, Fax, Email, Website;
     //@@@ continue rest of the fields
 
     return true;
@@ -223,7 +223,7 @@ bool CompanyInfo::WriteDelimFields(ostream& outStream, char fieldDelim, char rec
     outStream << Phone << fieldDelim;
     outStream << Fax << fieldDelim;
     outStream << Email << fieldDelim;
-    outStream << WebSite << fieldDelim;
+    outStream << Website << fieldDelim;
     outStream << endl;
     return true;
 }
@@ -254,7 +254,7 @@ bool CompanyInfo::readDelimFields(istream& inStream, char fieldDelim,
     getline(inStream, temp, fieldDelim);
     Email = temp;
     getline(inStream, temp, fieldDelim);
-    WebSite = temp;
+    Website = temp;
     getline(inStream, temp, fieldDelim);
 
     getline(inStream, temp, recordDelim);
@@ -313,10 +313,10 @@ bool CompanyInfo::readFixedLengthFields(istream& inStream, char extender, char r
 
     inStream.get(buf, 100);
     temp = buf;
-    WebSite = temp.erase(temp.find(extender));
+    Website = temp.erase(temp.find(extender));
 
 
-    //Address,City, ZipCode, Phone, Fax, Email, WebSite;
+    //Address,City, ZipCode, Phone, Fax, Email, Website;
     //@@@ continue rest of the fields
     getline(inStream, temp, recordDelim);
     return true;
@@ -335,8 +335,8 @@ bool CompanyInfo::writeFixedLengthFields(ostream& outStream, char extender, char
     temp += extendStringLength(Phone, 100, extender);
     temp += extendStringLength(Fax, 100, extender);
     temp += extendStringLength(Email, 100, extender);
-    temp += extendStringLength(WebSite, 100, extender);
-    //Address,City, ZipCode, Phone, Fax, Email, WebSite;
+    temp += extendStringLength(Website, 100, extender);
+    //Address,City, ZipCode, Phone, Fax, Email, Website;
     //@@@ continue rest of the fields
     outStream << temp << recordDelim;
     return true;
@@ -345,22 +345,19 @@ bool CompanyInfo::writeFixedLengthFields(ostream& outStream, char extender, char
 
 //read json fields- [https://stackoverflow.com/questions/17549906/c-json-serialization]
 bool CompanyInfo::readJsonFields(istream& inStream) {
-    //Json::Value json_CompanyInfo;
-    //inStream >> json_CompanyInfo;
-    //this->CompanyCode = json_CompanyInfo.CompanyCode;
-    //this->CompanyDescription = json_CompanyInfo.CompanyDescription;
-    //this->CompanyName = json_CompanyInfo.CompanyName;
-    ////@@@ continue rest of the fields
+    Json::Value json_CompanyInfo;
+    inStream >> json_CompanyInfo;
+    this->CompanyCode = json_CompanyInfo["CompanyCode"].asString();
+    this->CompanyDescription = json_CompanyInfo["CompanyDescription"].asString();
+    this->CompanyName = json_CompanyInfo["CompanyName"].asString();
+    //@@@ continue rest of the fields
     return true;
 }
 
 //Write json fields- [https://stackoverflow.com/questions/17549906/c-json-serialization]
 bool CompanyInfo::writeJsonFields(ostream& outStream) {
-    //Json::Value json_CompanyInfo;
-    //json_CompanyInfo.
-    //outStream << json_CompanyInfo;
-
-    ////@@@ continue rest of the fields
+    const Json::Value json_CompanyInfo = toJson();
+    outStream << json_CompanyInfo;
     return true;
 }
 
@@ -380,3 +377,19 @@ const string& CompanyInfo::getCompanyName() const {
     return CompanyName;
 }
 
+Json::Value CompanyInfo::toJson()
+{
+    Json::Value json_CompanyInfo;
+    json_CompanyInfo["CompanyCode"] = CompanyCode;
+    json_CompanyInfo["CompanyName"] = CompanyName;
+    json_CompanyInfo["CompanyDescription"] = CompanyDescription;
+    json_CompanyInfo["TitleOfBusiness"] = TitleOfBusiness;
+    json_CompanyInfo["Address"] = Address;
+    json_CompanyInfo["City"] = City;
+    json_CompanyInfo["ZipCode"] = ZipCode;
+    json_CompanyInfo["Phone"] = Phone;
+    json_CompanyInfo["Fax"] = Fax;
+    json_CompanyInfo["Email"] = Email;
+    json_CompanyInfo["Website"] = Website;
+    return json_CompanyInfo;
+};

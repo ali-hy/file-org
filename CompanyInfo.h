@@ -5,12 +5,14 @@
 #include <fstream>
 #include <string>
 
+#include "vcpkg/packages/jsoncpp_x86-windows/include/json/value.h"
+
 using namespace std;
 
 class CompanyInfo {
 private:
     //declare all data members
-    string CompanyCode, CompanyDescription, CompanyName, ContactName, TitleOfBusiness, Address, City, ZipCode, Phone, Fax, Email, WebSite;
+    string CompanyCode, CompanyDescription, CompanyName, ContactName, TitleOfBusiness, Address, City, ZipCode, Phone, Fax, Email, Website;
 
 public:
     CompanyInfo(void);
@@ -73,6 +75,8 @@ public:
     bool writeJsonFields(ostream& outStream);
 
     const string& getCompanyName() const;
+
+    Json::Value toJson();
 };
 
 #endif
