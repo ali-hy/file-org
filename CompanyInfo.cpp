@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <cctype>
 #include <windows.h>
+#include "vcpkg/packages/jsoncpp_x86-windows/include/json/json.h"
+
 
 string CompanyInfo::extendStringLength(string in, int requiredSize, char appendChar) {
     while (in.length() < requiredSize)
@@ -342,24 +344,23 @@ bool CompanyInfo::writeFixedLengthFields(ostream& outStream, char extender, char
 
 
 //read json fields- [https://stackoverflow.com/questions/17549906/c-json-serialization]
-bool CompanyInfo::readJsonFields(istream&) {
-    //#include <json/json.h>
-    Json::Value json_CompanyInfo;
-    inStream >> json_CompanyInfo;
-    this->CompanyCode = json_CompanyInfo.CompanyCode;
-    this->CompanyDescription = json_CompanyInfo.CompanyDescription;
-    this->CompanyName = json_CompanyInfo.CompanyName;
-    //@@@ continue rest of the fields
+bool CompanyInfo::readJsonFields(istream& inStream) {
+    //Json::Value json_CompanyInfo;
+    //inStream >> json_CompanyInfo;
+    //this->CompanyCode = json_CompanyInfo.CompanyCode;
+    //this->CompanyDescription = json_CompanyInfo.CompanyDescription;
+    //this->CompanyName = json_CompanyInfo.CompanyName;
+    ////@@@ continue rest of the fields
     return true;
 }
 
 //Write json fields- [https://stackoverflow.com/questions/17549906/c-json-serialization]
 bool CompanyInfo::writeJsonFields(ostream& outStream) {
-    //#include <json/json.h>
-    Json::Value json_CompanyInfo = toJson(this);
-    outStream << json_CompanyInfo;
+    //Json::Value json_CompanyInfo;
+    //json_CompanyInfo.
+    //outStream << json_CompanyInfo;
 
-    //@@@ continue rest of the fields
+    ////@@@ continue rest of the fields
     return true;
 }
 
